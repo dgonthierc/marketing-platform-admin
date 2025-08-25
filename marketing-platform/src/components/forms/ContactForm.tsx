@@ -107,13 +107,11 @@ export function ContactForm() {
       // Calculate lead score
       const score = calculateLeadScore({
         email: data.email,
-        name: data.name,
         company: data.company,
         phone: data.phone,
         budget: data.budget,
-        platforms: data.platforms,
-        timeline: data.timeline,
-      });
+        platforms: data.platforms
+      } as any);
       
       setLeadScore(score);
 

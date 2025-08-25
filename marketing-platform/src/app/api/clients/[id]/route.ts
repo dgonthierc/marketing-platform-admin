@@ -3,10 +3,11 @@ import { clientQueries } from '@/lib/db/queries';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const client = await clientQueries.findById(params.id);
+    const { id } = await params;
+    const client = await clientQueries.findById(id);
     
     if (!client) {
       return NextResponse.json(

@@ -139,7 +139,7 @@ const mockClients: Client[] = [
 ];
 
 export default function ClientsPage() {
-  const { authUser, loading } = useRequireAuth();
+  const { user, loading } = useRequireAuth();
   const [clients, setClients] = useState<Client[]>(mockClients);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<'all' | 'active' | 'paused' | 'trial' | 'ended'>('all');
@@ -147,10 +147,10 @@ export default function ClientsPage() {
   const [showClientModal, setShowClientModal] = useState(false);
 
   useEffect(() => {
-    if (!loading && authUser && authUser.role !== 'admin') {
+    if (!loading && user && user.role !== 'admin') {
       window.location.href = '/dashboard';
     }
-  }, [authUser, loading]);
+  }, [user, loading]);
 
   const filteredClients = clients.filter(client => {
     const matchesSearch = searchTerm === '' || 
@@ -224,7 +224,7 @@ export default function ClientsPage() {
     );
   }
 
-  if (!authUser || authUser.role !== 'admin') {
+  if (!user || user.role !== 'admin') {
     return null;
   }
 

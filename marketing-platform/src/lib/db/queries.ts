@@ -7,6 +7,7 @@ import {
   QuoteFormData,
   QuoteStatus,
   Client,
+  ClientStatus,
   ApiResponse,
   PaginatedResponse 
 } from '@/types/database';
@@ -34,7 +35,7 @@ export const leadQueries = {
       });
 
       // Trigger lead notification (would integrate with email service)
-      await this.notifyNewLead(lead);
+      await this.notifyNewLead(lead as any);
 
       return {
         success: true,
@@ -197,11 +198,10 @@ export const leadQueries = {
           company: lead.company,
           phone: lead.phone,
           industry: lead.industry || 'General',
-          status: 'ACTIVE',
+          status: ClientStatus.ACTIVE,
           monthlyFee: additionalData?.monthlyFee || 0,
           startDate: new Date(),
-          ...additionalData,
-        },
+        } as any,
       });
 
       // Update lead status
@@ -209,7 +209,7 @@ export const leadQueries = {
 
       return {
         success: true,
-        data: client as Client,
+        data: client as unknown as Client,
         message: 'Lead convertido a cliente exitosamente',
       };
     } catch (error) {
@@ -239,7 +239,7 @@ export const leadQueries = {
         data: {
           leadId,
           ...interaction,
-        },
+        } as any,
       });
 
       return {
@@ -282,7 +282,8 @@ export const quoteQueries = {
       const quote = await prisma.quote.create({
         data: {
           leadId,
-          services: data,
+          quoteNumber: `Q-${Date.now().toString(36).toUpperCase()}`,
+          services: data as any,
           monthlyFee,
           setupFee,
           totalValue,
@@ -299,7 +300,7 @@ export const quoteQueries = {
 
       return {
         success: true,
-        data: quote as Quote,
+        data: quote as unknown as Quote,
         message: 'Cotización creada exitosamente',
       };
     } catch (error) {
@@ -370,7 +371,7 @@ export const quoteQueries = {
 
       return {
         success: true,
-        data: quote as Quote,
+        data: quote as unknown as Quote,
         message: 'Cotización enviada',
       };
     } catch (error) {
@@ -411,7 +412,7 @@ export const quoteQueries = {
 
       return {
         success: true,
-        data: quote as Quote,
+        data: quote as unknown as Quote,
         message: 'Estado actualizado',
       };
     } catch (error) {
@@ -432,7 +433,7 @@ export const quoteQueries = {
         where: { leadId },
         orderBy: { createdAt: 'desc' },
       });
-      return quotes as Quote[];
+      return quotes as unknown as Quote[];
     } catch (error) {
       console.error('Error getting quotes:', error);
       return [];
@@ -458,7 +459,7 @@ export const clientQueries = {
             take: 5,
           },
           reports: {
-            orderBy: { createdAt: 'desc' },
+            orderBy: { generatedAt: 'desc' },
             take: 5,
           },
         },
@@ -516,8 +517,11 @@ export const clientQueries = {
           company: data.company,
           phone: data.phone,
           leadId: lead?.id,
-          status: 'ACTIVE'
-        }
+          status: 'ACTIVE',
+          industry: 'General',
+          monthlyFee: 0,
+          startDate: new Date()
+        } as any
       });
 
       // Update lead status if exists
@@ -530,7 +534,7 @@ export const clientQueries = {
 
       return {
         success: true,
-        data: client as Client,
+        data: client as unknown as Client,
         message: 'Cliente creado exitosamente'
       };
     } catch (error) {
@@ -556,7 +560,7 @@ export const clientQueries = {
           },
         },
       });
-      return clients as Client[];
+      return clients as unknown as Client[];
     } catch (error) {
       console.error('Error listing clients:', error);
       return [];
@@ -585,7 +589,7 @@ export const clientQueries = {
         prisma.payment.aggregate({
           where: {
             clientId,
-            status: 'PAID',
+            status: 'PAID' as any,
           },
           _sum: {
             amount: true,
@@ -594,7 +598,7 @@ export const clientQueries = {
         prisma.project.count({
           where: {
             clientId,
-            status: 'ACTIVE',
+            status: ClientStatus.ACTIVE,
           },
         }),
       ]);

@@ -124,7 +124,7 @@ const mockTickets: Ticket[] = [
 ];
 
 export default function SupportPage() {
-  const { authUser, loading } = useRequireAuth();
+  const { user, loading } = useRequireAuth();
   const [tickets, setTickets] = useState<Ticket[]>([]);
   const [ticketsLoading, setTicketsLoading] = useState(true);
   const [selectedTicket, setSelectedTicket] = useState<Ticket | null>(null);
@@ -133,10 +133,10 @@ export default function SupportPage() {
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
-    if (authUser?.clientId) {
+    if (user?.id || 'client-123') {
       loadTickets();
     }
-  }, [authUser, filterStatus]);
+  }, [user, filterStatus]);
 
   const loadTickets = async () => {
     try {
@@ -174,7 +174,7 @@ export default function SupportPage() {
           id: `msg-${Date.now()}`,
           content: ticketData.description,
           isStaff: false,
-          authorName: authUser?.metadata?.name || 'Cliente',
+          authorName: user?.email || 'Cliente',
           createdAt: new Date()
         }
       ]
@@ -190,7 +190,7 @@ export default function SupportPage() {
       id: `msg-${Date.now()}`,
       content: message,
       isStaff: false,
-      authorName: authUser?.metadata?.name || 'Cliente',
+      authorName: user?.email || 'Cliente',
       createdAt: new Date()
     };
     

@@ -187,10 +187,10 @@ export function TicketForm({ onSubmit, onCancel }: TicketFormProps) {
               <div className="text-sm text-blue-800">
                 <p className="font-medium mb-1">Tiempo de respuesta estimado:</p>
                 <ul className="space-y-1 text-blue-700">
-                  <li>• Prioridad Urgente: < 1 hora</li>
-                  <li>• Prioridad Alta: < 2 horas</li>
-                  <li>• Prioridad Media: < 4 horas</li>
-                  <li>• Prioridad Baja: < 24 horas</li>
+                  <li>• Prioridad Urgente: &lt; 1 hora</li>
+                  <li>• Prioridad Alta: &lt; 2 horas</li>
+                  <li>• Prioridad Media: &lt; 4 horas</li>
+                  <li>• Prioridad Baja: &lt; 24 horas</li>
                 </ul>
               </div>
             </div>

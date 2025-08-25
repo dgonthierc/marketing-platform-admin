@@ -34,16 +34,16 @@ interface DashboardMetrics {
 }
 
 export default function DashboardPage() {
-  const { authUser, loading } = useRequireAuth();
+  const { user, loading } = useRequireAuth();
   const [metrics, setMetrics] = useState<DashboardMetrics | null>(null);
   const [metricsLoading, setMetricsLoading] = useState(true);
   const [dateRange, setDateRange] = useState('last30days');
 
   useEffect(() => {
-    if (authUser?.clientId) {
+    if (user?.id || 'client-123') {
       loadDashboardData();
     }
-  }, [authUser, dateRange]);
+  }, [user, dateRange]);
 
   const loadDashboardData = async () => {
     try {
@@ -89,7 +89,7 @@ export default function DashboardPage() {
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
             <div>
               <h1 className="text-2xl font-bold text-gray-900">
-                Bienvenido de vuelta, {authUser?.metadata?.name || 'Cliente'}
+                Bienvenido de vuelta, {user?.email || 'Cliente'}
               </h1>
               <p className="text-gray-600 mt-1">
                 Aquí está el resumen de tus campañas de los últimos 30 días

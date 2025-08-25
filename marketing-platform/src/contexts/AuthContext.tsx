@@ -9,7 +9,6 @@ import { clientQueries } from '@/lib/db/queries';
 interface AuthContextType {
   user: User | null;
   session: Session | null;
-  authUser: AuthUser | null;
   loading: boolean;
   error: string | null;
   signUp: (data: SignUpData) => Promise<void>;
@@ -147,7 +146,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           
           if (event === 'SIGNED_IN' && PUBLIC_ROUTES.includes(pathname)) {
             // Redirect based on role
-            if (authUser?.role === 'admin') {
+            if (user?.role === 'admin') {
               router.push('/admin');
             } else {
               router.push('/dashboard');
@@ -262,7 +261,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const value = {
     user,
     session,
-    authUser,
     loading,
     error,
     signUp,

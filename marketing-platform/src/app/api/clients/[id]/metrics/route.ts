@@ -3,10 +3,11 @@ import { clientQueries } from '@/lib/db/queries';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const metrics = await clientQueries.getMetrics(params.id);
+    const { id } = await params;
+    const metrics = await clientQueries.getMetrics(id);
     
     if (!metrics) {
       return NextResponse.json(

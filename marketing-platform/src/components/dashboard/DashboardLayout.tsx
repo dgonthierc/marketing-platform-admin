@@ -40,7 +40,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const pathname = usePathname();
-  const { authUser, signOut } = useAuth();
+  const { user, signOut } = useAuth();
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -112,10 +112,10 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
               </div>
               <div className="flex-1">
                 <p className="text-sm font-medium text-gray-900">
-                  {authUser?.metadata?.name || 'Cliente'}
+                  {user?.email || 'Cliente'}
                 </p>
                 <p className="text-xs text-gray-500">
-                  {authUser?.email}
+                  {user?.email}
                 </p>
               </div>
             </div>

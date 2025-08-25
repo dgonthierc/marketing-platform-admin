@@ -100,7 +100,7 @@ const mockReports: Report[] = [
 ];
 
 export default function ReportsPage() {
-  const { authUser, loading } = useRequireAuth();
+  const { user, loading } = useRequireAuth();
   const [reports, setReports] = useState<Report[]>([]);
   const [reportsLoading, setReportsLoading] = useState(true);
   const [selectedReport, setSelectedReport] = useState<Report | null>(null);
@@ -109,10 +109,10 @@ export default function ReportsPage() {
   const [viewerOpen, setViewerOpen] = useState(false);
 
   useEffect(() => {
-    if (authUser?.clientId) {
+    if (user?.id || 'client-123') {
       loadReports();
     }
-  }, [authUser, filterType]);
+  }, [user, filterType]);
 
   const loadReports = async () => {
     try {

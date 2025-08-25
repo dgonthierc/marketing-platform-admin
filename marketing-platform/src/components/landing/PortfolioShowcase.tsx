@@ -407,7 +407,7 @@ function CaseStudyModal({ study, onClose }: CaseStudyModalProps) {
                     )}
                   </div>
                   <p className="text-gray-700 italic mb-3">
-                    "{study.results.testimonial.content}"
+                    &ldquo;{study.results.testimonial.content}&rdquo;
                   </p>
                   <div>
                     <div className="font-semibold text-gray-900">

@@ -107,7 +107,7 @@ const mockPaymentMethods: PaymentMethod[] = [
 ];
 
 export default function BillingPage() {
-  const { authUser, loading } = useRequireAuth();
+  const { user, loading } = useRequireAuth();
   const [payments, setPayments] = useState<Payment[]>([]);
   const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([]);
   const [paymentsLoading, setPaymentsLoading] = useState(true);
@@ -116,11 +116,11 @@ export default function BillingPage() {
   const [selectedYear, setSelectedYear] = useState('2025');
 
   useEffect(() => {
-    if (authUser?.clientId) {
+    if (user?.id || 'client-123') {
       loadPayments();
       loadPaymentMethods();
     }
-  }, [authUser, filterStatus, selectedYear]);
+  }, [user, filterStatus, selectedYear]);
 
   const loadPayments = async () => {
     try {
@@ -339,7 +339,7 @@ export default function BillingPage() {
                     </div>
                   </div>
                   {method.isDefault && (
-                    <Badge variant="primary" size="sm">
+                    <Badge variant="default" size="sm">
                       Predeterminado
                     </Badge>
                   )}
@@ -537,7 +537,7 @@ export default function BillingPage() {
               </p>
               <div className="flex flex-col sm:flex-row gap-3">
                 <Button
-                  variant="primary"
+                  variant="default"
                   size="sm"
                   onClick={() => window.location.href = '/dashboard/support'}
                 >

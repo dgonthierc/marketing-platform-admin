@@ -4,9 +4,10 @@ import { QuoteStatus } from '@/types/database';
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const body = await request.json();
     const { status } = body;
 
@@ -17,7 +18,7 @@ export async function PATCH(
       );
     }
 
-    const result = await quoteQueries.updateStatus(params.id, status);
+    const result = await quoteQueries.updateStatus(id, status);
 
     if (!result.success) {
       return NextResponse.json(
@@ -38,15 +39,16 @@ export async function PATCH(
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const body = await request.json();
     const { action } = body;
 
     switch (action) {
       case 'send':
-        const result = await quoteQueries.send(params.id);
+        const result = await quoteQueries.send(id);
         return NextResponse.json(result);
 
       default:

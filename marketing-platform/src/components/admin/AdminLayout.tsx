@@ -52,16 +52,16 @@ export function AdminLayout({ children }: AdminLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
-  const { authUser, signOut } = useAuth();
+  const { user, signOut } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
 
   // Check if user is admin
   useEffect(() => {
-    if (authUser && authUser.role !== 'admin') {
+    if (user && user.role !== 'admin') {
       router.push('/dashboard');
     }
-  }, [authUser, router]);
+  }, [user, router]);
 
   const handleSignOut = async () => {
     await signOut();
@@ -121,14 +121,14 @@ export function AdminLayout({ children }: AdminLayoutProps) {
             <div className="mt-auto pb-4 border-t border-gray-800 pt-4">
               <div className="flex items-center gap-3 px-3 py-2">
                 <div className="h-10 w-10 rounded-full bg-primary-600 flex items-center justify-center text-white font-medium">
-                  {authUser?.metadata?.name?.charAt(0).toUpperCase() || 'A'}
+                  {user?.email?.charAt(0).toUpperCase() || 'A'}
                 </div>
                 <div className="flex-1">
                   <p className="text-sm font-medium text-white">
-                    {authUser?.metadata?.name || 'Admin'}
+                    {user?.email || 'Admin'}
                   </p>
                   <p className="text-xs text-gray-400">
-                    {authUser?.email}
+                    {user?.email}
                   </p>
                 </div>
               </div>
@@ -216,7 +216,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
                     className="flex items-center gap-2 p-2 text-gray-700 hover:text-gray-900"
                   >
                     <div className="h-8 w-8 rounded-full bg-primary-600 flex items-center justify-center text-white text-sm font-medium">
-                      {authUser?.metadata?.name?.charAt(0).toUpperCase() || 'A'}
+                      {user?.email?.charAt(0).toUpperCase() || 'A'}
                     </div>
                     <ChevronDown className="h-4 w-4" />
                   </button>
@@ -231,10 +231,10 @@ export function AdminLayout({ children }: AdminLayoutProps) {
                       >
                         <div className="px-4 py-2 border-b">
                           <p className="text-sm font-medium text-gray-900">
-                            {authUser?.metadata?.name || 'Admin'}
+                            {user?.email || 'Admin'}
                           </p>
                           <p className="text-xs text-gray-500">
-                            {authUser?.email}
+                            {user?.email}
                           </p>
                         </div>
                         <button

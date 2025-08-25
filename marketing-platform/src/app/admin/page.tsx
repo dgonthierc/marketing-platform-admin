@@ -97,17 +97,17 @@ const mockActivities: RecentActivity[] = [
 ];
 
 export default function AdminDashboard() {
-  const { authUser, loading } = useRequireAuth();
+  const { user, loading } = useRequireAuth();
   const [metrics, setMetrics] = useState<AdminMetrics>(mockMetrics);
   const [activities, setActivities] = useState<RecentActivity[]>(mockActivities);
   const [dateRange, setDateRange] = useState('month');
 
   useEffect(() => {
     // Check if user is admin
-    if (!loading && authUser && authUser.role !== 'admin') {
+    if (!loading && user && user.role !== 'admin') {
       window.location.href = '/dashboard';
     }
-  }, [authUser, loading]);
+  }, [user, loading]);
 
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat('es-MX', {
@@ -142,7 +142,7 @@ export default function AdminDashboard() {
     );
   }
 
-  if (!authUser || authUser.role !== 'admin') {
+  if (!user || user.role !== 'admin') {
     return null;
   }
 
@@ -156,7 +156,7 @@ export default function AdminDashboard() {
               Dashboard Administrativo
             </h1>
             <p className="text-gray-600 mt-1">
-              Bienvenido de vuelta, {authUser.metadata?.name || 'Admin'}
+              Bienvenido de vuelta, {user?.email || 'Admin'}
             </p>
           </div>
           

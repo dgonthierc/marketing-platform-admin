@@ -4,10 +4,11 @@ import { LeadStatus } from '@/types/database';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const lead = await leadQueries.findById(params.id);
+    const { id } = await params;
+    const lead = await leadQueries.findById(id);
     
     if (!lead) {
       return NextResponse.json(
@@ -28,9 +29,10 @@ export async function GET(
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const body = await request.json();
     const { status } = body;
 
@@ -41,7 +43,7 @@ export async function PATCH(
       );
     }
 
-    const result = await leadQueries.updateStatus(params.id, status);
+    const result = await leadQueries.updateStatus(id, status);
 
     if (!result.success) {
       return NextResponse.json(
@@ -62,23 +64,24 @@ export async function PATCH(
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const body = await request.json();
     const { action, ...data } = body;
 
     switch (action) {
       case 'convert':
         const convertResult = await leadQueries.convertToClient(
-          params.id,
+          id,
           data.additionalData
         );
         return NextResponse.json(convertResult);
 
       case 'interaction':
         const interactionResult = await leadQueries.addInteraction(
-          params.id,
+          id,
           data.interaction
         );
         return NextResponse.json(interactionResult);
